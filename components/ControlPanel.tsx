@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Resolution } from '../types';
+import type { Resolution, Style } from '../types';
 import ImageUploader from './ImageUploader';
 import MultiImageUploader from './MultiImageUploader';
 import ToggleSwitch from './ToggleSwitch';
@@ -22,11 +22,17 @@ interface ControlPanelProps {
   setCharacterDescription: (value: string) => void;
   backgroundDescription: string;
   setBackgroundDescription: (value: string) => void;
+  negativePrompt: string;
+  setNegativePrompt: (value: string) => void;
+  selectedStyle: Style;
+  setSelectedStyle: (value: Style) => void;
   resolution: Resolution;
   setResolution: (value: Resolution) => void;
   onGenerate: () => void;
   isLoading: boolean;
 }
+
+const styles: Style[] = ['Mặc định', 'Hoạt hình 3D', 'Tranh sơn dầu', 'Cyberpunk', 'Chân thực'];
 
 const ControlPanel: React.FC<ControlPanelProps> = (props) => {
   const {
@@ -46,6 +52,10 @@ const ControlPanel: React.FC<ControlPanelProps> = (props) => {
     setCharacterDescription,
     backgroundDescription,
     setBackgroundDescription,
+    negativePrompt,
+    setNegativePrompt,
+    selectedStyle,
+    setSelectedStyle,
     resolution,
     setResolution,
     onGenerate,
@@ -127,8 +137,38 @@ const ControlPanel: React.FC<ControlPanelProps> = (props) => {
             className="w-full bg-gray-700 border border-gray-600 rounded-lg text-white p-2 text-sm focus:ring-blue-500 focus:border-blue-500 transition"
           />
         </div>
+        <div>
+          <label htmlFor="neg-prompt" className="block text-sm font-medium text-gray-300 mb-1">Prompt tiêu cực</label>
+          <textarea
+            id="neg-prompt"
+            rows={2}
+            value={negativePrompt}
+            onChange={(e) => setNegativePrompt(e.target.value)}
+            placeholder="VD: xấu xí, thừa ngón tay, mờ ảo..."
+            className="w-full bg-gray-700 border border-gray-600 rounded-lg text-white p-2 text-sm focus:ring-blue-500 focus:border-blue-500 transition"
+          />
+        </div>
       </div>
       
+      <div>
+        <label className="block text-sm font-medium text-gray-300 mb-2">Phong cách nghệ thuật</label>
+        <div className="grid grid-cols-3 gap-2">
+          {styles.map(style => (
+            <button
+              key={style}
+              onClick={() => setSelectedStyle(style)}
+              className={`px-3 py-2 text-xs md:text-sm font-medium rounded-md transition-all duration-200 ${
+                selectedStyle === style 
+                  ? 'bg-blue-600 text-white shadow-lg' 
+                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+              }`}
+            >
+              {style}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div>
         <label className="block text-sm font-medium text-gray-300 mb-2">Chất lượng ảnh đầu ra</label>
         <div className="grid grid-cols-3 gap-2">
