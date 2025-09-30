@@ -1,0 +1,5 @@
+{
+  "name": "TẠO ẢNH PRO",
+  "description": "An application that allows users to create character images based on Gemini AI (Nano Banana). Upload an image, provide descriptions, and generate unique AI-powered visuals.",
+  "requestFramePermissions": []
+}
